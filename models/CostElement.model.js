@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const CostElementSchema = new mongoose.Schema({
+  _id: { 
+    type: mongoose.Schema.ObjectId,
+    default: null 
+  },
   name: { 
     type: String, 
     required: true 

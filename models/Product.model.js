@@ -1,11 +1,15 @@
 const mongoose = require('mongoose');
 
 const ProductSchema = new mongoose.Schema({
+  _id: { 
+    type: mongoose.Schema.ObjectId,
+    default: null 
+  },
   name: { 
     type: String, 
     required: true 
   },
-  manufacturing_time_seconds: { 
+  base_quantity : { 
     type: Number, 
     required: true 
   },
@@ -26,12 +30,12 @@ const ProductSchema = new mongoose.Schema({
       }
     }
   ], // Array of objects containing reference to cost_element, quantity, and unit. The cost element can be grouped by category or cost_type (later).
-  total_cost: { 
+  unit_total_cost: { 
     type: Number, 
     required: true,
     default: 0 
   },
-  price: { 
+  unit_price: { 
     type: Number, 
     required: true 
   },
