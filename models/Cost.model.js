@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const CostElementSchema = new mongoose.Schema({
+const CostSchema = new mongoose.Schema({
   _id: { 
     type: mongoose.Schema.ObjectId,
     default: null 
@@ -16,9 +16,9 @@ const CostElementSchema = new mongoose.Schema({
   },
   cost_type: { 
     type: String, 
-    enum: ['ingredient', 'HR', 'place', 'energy'], 
+    enum: ['material', 'hr', 'place', 'energy'], 
     required: true 
   },
 });
 
-module.exports = mongoose.model('CostElement', CostElementSchema);
+module.exports = mongoose.model('Cost', CostSchema);

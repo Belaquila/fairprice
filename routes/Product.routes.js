@@ -2,10 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Product = require('../models/Product.model.js');
 
+const { isAuthenticated } = require('../middleware/jwt.middleware.js');
+
+// Protect all routes using jwtMiddleware
+router.use(isAuthenticated);
+
 // GET: Retrieve all products
 router.get('/products', (req, res, next) => {
     Product.find()
-      .populate('cost_elements.cost_element')
+      .populate('costs.cost')
       .then((products) => {
         res.json(products);
       })
@@ -14,8 +19,8 @@ router.get('/products', (req, res, next) => {
   
   // POST: Create a new product
   router.post('/products', (req, res, next) => {
-    const { name, base_quantity, cost_elements, unit_total_cost, unit_price } = req.body;
-    const product = new Product({ name, base_quantity, cost_elements, unit_total_cost, unit_price });
+    const { name, base_quantity, costs, unit_total_cost, unit_price } = req.body;
+    const product = new Product({ name, base_quantity, costs, unit_total_cost, unit_price });
   
     product
       .save()

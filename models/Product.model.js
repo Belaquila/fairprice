@@ -13,11 +13,11 @@ const ProductSchema = new mongoose.Schema({
     type: Number, 
     required: true 
   },
-  cost_elements: [
+  costs: [
     {
-      cost_element: { 
+      cost: { 
         type: mongoose.Schema.Types.ObjectId, 
-        ref: 'CostElement', 
+        ref: 'Cost', 
         required: true 
       },
       quantity: { 
