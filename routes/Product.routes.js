@@ -111,8 +111,6 @@ router.get("/products/:productId/costs/:costId", findProductById, (req, res) => 
 router.post("/products/:productId/costs", findProductById, (req, res, next) => {
   const { costId, quantity, unit } = req.body;
 
-  console.log(req.body)
-
   if (!costId || !quantity || !unit) {
     return res.status(400).json({ message: "Missing required fields" });
   }

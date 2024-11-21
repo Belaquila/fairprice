@@ -16,6 +16,16 @@ router.get('/costs', (req, res, next) => {
     .catch(next); // Pass error to error handler
 });
 
+// GET: Check if a cost exists by name
+router.get('/costs', (req, res, next) => {
+  const { name } = req.query;
+  Cost.findOne({ name })
+    .then((cost) => {
+      console.log(cost)
+      res.json({ exists: !!cost });
+    })
+    .catch(next);
+});
 
 // POST: Create a new cost element
 router.post('/costs', (req, res, next) => {
