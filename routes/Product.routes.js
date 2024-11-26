@@ -46,6 +46,20 @@ router.get('/products/:id', (req, res, next) => {
     });
 });
 
+// GET : retrieve all products
+router.get('/products', (req, res, next) => {
+  Product.find()
+    .populate('costs.cost')
+    .then((products) => {
+      res.json(products);
+    })
+    .catch((error) => {
+      console.error("Error fetching products:", error);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
+
 // POST: Create a new product modif*******
 router.post('/products', (req, res, next) => {
   const { name, base_quantity, costs, unit_total_cost, unit_price, imageUrl } = req.body;
