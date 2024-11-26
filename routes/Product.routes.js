@@ -3,32 +3,42 @@ const router = express.Router();
 const Product = require('../models/Product.model.js');
 const Cost = require('../models/Cost.model.js');
 
+// ***** Require fileUploader in order to use it
+const fileUploader = require('../config/cloudinary.config');
+
 const { isAuthenticated } = require('../middleware/jwt.middleware.js');
 
 // Protect all routes using jwtMiddleware
 router.use(isAuthenticated);
 
-// GET: Retrieve all products
-router.get('/products', (req, res, next) => {
-  Product.find()
-    .populate('costs.cost')
-    .then((products) => {
-      res.json(products);
-    })
-    .catch(next);
+
+// ***** modif For Cloudinary : POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
+router.post('/upload', fileUploader.single('imageUrl'), (req, res, next) => {
+  console.log("file is: ", req.file)
+ 
+  if (!req.file) {
+    next(new Error('No file uploaded!'));
+    return;
+  }
+ 
+  // Get the URL of the uploaded file and send it as a response.
+  // 'fileUrl' can be any name, just make sure you remember to use the same when accessing it on the frontend
+ 
+  res.json({ fileUrl: req.file.path });
 });
+
 
 // GET: Retrieve a product by ID
 router.get('/products/:id', (req, res, next) => {
-  const { id } = req.params; // Extract product ID from the URL
+  const { id } = req.params;
 
   Product.findById(id)
-    .populate('costs.cost') // Populate the 'cost' field in 'costs' array
+    .populate('costs.cost')
     .then((product) => {
       if (!product) {
         return res.status(404).json({ message: 'Product not found' });
       }
-      res.json(product); // Send the product data as JSON response
+      res.json(product);
     })
     .catch((error) => {
       console.error("Error fetching product:", error);
@@ -36,16 +46,15 @@ router.get('/products/:id', (req, res, next) => {
     });
 });
 
-
-// POST: Create a new product
+// POST: Create a new product modif*******
 router.post('/products', (req, res, next) => {
-  const { name, base_quantity, costs, unit_total_cost, unit_price } = req.body;
-  const product = new Product({ name, base_quantity, costs, unit_total_cost, unit_price });
+  const { name, base_quantity, costs, unit_total_cost, unit_price, imageUrl } = req.body;
+  const product = new Product({ name, base_quantity, costs, unit_total_cost, unit_price, imageUrl });
 
   product
     .save()
     .then((savedProduct) => {
-      res.status(201).json(savedProduct);
+      res.status(201).json({_id: savedProduct._id, savedProduct}); // don't work toget _id
     })
     .catch(next);
 });
@@ -62,8 +71,6 @@ router.put('/products/:id', (req, res, next) => {
     })
     .catch(next);
 });
-
-
 
 // DELETE: Delete a product
 router.delete('/products/:id', (req, res, next) => {
@@ -174,7 +181,5 @@ router.delete("/products/:productId/costs/:costId", findProductById, (req, res, 
     .then((updatedProduct) => res.json(updatedProduct))
     .catch((error) => next(error));
 });
-
-
 
 module.exports = router;
