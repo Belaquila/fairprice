@@ -196,4 +196,22 @@ router.delete("/products/:productId/costs/:costId", findProductById, (req, res, 
     .catch((error) => next(error));
 });
 
+// GET: Retrieve all products using a specific cost
+router.get('/products/cost/:costId', (req, res, next) => {
+  const { costId } = req.params;
+
+  Product.find({ 'costs.cost': costId })
+    .populate('costs.cost')
+    .then((products) => {
+      if (products.length === 0) {
+        return res.status(404).json({ message: 'No products found using this cost' });
+      }
+      res.json(products);
+    })
+    .catch((error) => {
+      console.error("Error fetching products by cost:", error);
+      res.status(500).json({ message: 'Internal server error' });
+    });
+});
+
 module.exports = router;
