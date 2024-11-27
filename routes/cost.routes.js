@@ -29,8 +29,8 @@ router.get('/costs', (req, res, next) => {
 
 // POST: Create a new cost element
 router.post('/costs', (req, res, next) => {
-  const { name, category, cost_type } = req.body;
-  const cost= new Cost({ name, category, cost_type });
+  const { name, category, cost_type, value, unit, currency, imageUrl } = req.body;
+  const cost= new Cost({ name, category, cost_type, value, unit, currency, imageUrl });
 
   cost
     .save()

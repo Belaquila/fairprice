@@ -19,6 +19,22 @@ const CostSchema = new mongoose.Schema({
     enum: ['material', 'hr', 'place', 'energy'], 
     required: true 
   },
+  value: { 
+    type: Number, 
+    required: true 
+  },
+  currency: { 
+    type: String, 
+    required: true 
+  },
+  unit: { 
+    type: String, 
+    required: true 
+  },
+  imageUrl: { 
+    type: String, 
+    required: true 
+  },
 });
 
 module.exports = mongoose.model('Cost', CostSchema);
