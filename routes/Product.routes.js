@@ -204,7 +204,7 @@ router.get('/products/cost/:costId', (req, res, next) => {
     .populate('costs.cost')
     .then((products) => {
       if (products.length === 0) {
-        return res.status(404).json({ message: 'No products found using this cost' });
+        return [];
       }
       res.json(products);
     })
