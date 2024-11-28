@@ -4,7 +4,7 @@ const Product = require('../models/Product.model.js');
 const Cost = require('../models/Cost.model.js');
 
 // ***** Require fileUploader in order to use it
-const fileUploader = require('../config/cloudinary.config');
+const fileUploader = require('../config/cloudinary.config.js');
 
 const { isAuthenticated } = require('../middleware/jwt.middleware.js');
 
