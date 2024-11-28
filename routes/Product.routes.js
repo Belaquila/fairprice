@@ -14,7 +14,6 @@ router.use(isAuthenticated);
 
 // ***** modif For Cloudinary : POST "/api/upload" => Route that receives the image, sends it to Cloudinary via the fileUploader and returns the image URL
 router.post('/upload', fileUploader.single('imageUrl'), (req, res, next) => {
-  console.log("file is: ", req.file)
  
   if (!req.file) {
     next(new Error('No file uploaded!'));
@@ -104,7 +103,6 @@ router.delete('/products/:id', (req, res, next) => {
 
 // Middleware to find a product by ID
 const findProductById = (req, res, next) => {
-  console.log("product ID = ",req.params.productId)
   Product.findById(req.params.productId)
     .populate("costs.cost")
     .then((product) => {
@@ -156,10 +154,6 @@ router.post("/products/:productId/costs", findProductById, (req, res, next) => {
 // PUT: Update a single cost in a product
 router.put("/products/:productId/costs/:costId", findProductById, (req, res, next) => {
   const { quantity, unit } = req.body;
-
-  console.log(req.body)
-  console.log(req.params.costId)
-  console.log(req.product.costs)
 
   const cost = req.product.costs.find(
     (c) => c._id.toString() === req.params.costId

@@ -21,7 +21,6 @@ router.get('/costs', (req, res, next) => {
   const { name } = req.query;
   Cost.findOne({ name })
     .then((cost) => {
-      console.log(cost)
       res.json({ exists: !!cost });
     })
     .catch(next);
